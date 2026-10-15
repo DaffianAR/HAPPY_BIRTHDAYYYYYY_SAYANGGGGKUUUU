@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="id" data-fase="awal">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>For You</title>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital@0;1&family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Mawar (hiasan tepi) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <radialGradient id="gA" cx="50%" cy="45%" r="60%"><stop offset="0" stop-color="#f7c3d5"/><stop offset="1" stop-color="#b24a76"/></radialGradient>
+    <radialGradient id="gB" cx="50%" cy="30%" r="75%"><stop offset="0" stop-color="#fbd3e1"/><stop offset=".6" stop-color="#e58aa9"/><stop offset="1" stop-color="#a8386a"/></radialGradient>
+    <radialGradient id="gC" cx="50%" cy="50%" r="60%"><stop offset="0" stop-color="#8c2354"/><stop offset="1" stop-color="#d9779c"/></radialGradient>
+    <symbol id="rose" viewBox="0 0 100 100">
+      <circle cx="50" cy="50" r="48" fill="url(#gA)"/>
+      <g fill="url(#gB)" stroke="#7a2048" stroke-opacity=".35">
+        <ellipse cx="50" cy="27" rx="23" ry="21"/>
+        <ellipse cx="50" cy="27" rx="23" ry="21" transform="rotate(72 50 50)"/>
+        <ellipse cx="50" cy="27" rx="23" ry="21" transform="rotate(144 50 50)"/>
+        <ellipse cx="50" cy="27" rx="23" ry="21" transform="rotate(216 50 50)"/>
+        <ellipse cx="50" cy="27" rx="23" ry="21" transform="rotate(288 50 50)"/>
+      </g>
+      <g fill="url(#gB)" stroke="#7a2048" stroke-opacity=".4">
+        <ellipse cx="50" cy="36" rx="15" ry="13" transform="rotate(36 50 50)"/>
+        <ellipse cx="50" cy="36" rx="15" ry="13" transform="rotate(108 50 50)"/>
+        <ellipse cx="50" cy="36" rx="15" ry="13" transform="rotate(180 50 50)"/>
+        <ellipse cx="50" cy="36" rx="15" ry="13" transform="rotate(252 50 50)"/>
+        <ellipse cx="50" cy="36" rx="15" ry="13" transform="rotate(324 50 50)"/>
+      </g>
+      <circle cx="50" cy="50" r="13" fill="url(#gC)" stroke="#7a2048" stroke-opacity=".5"/>
+      <path d="M50 43c7 0 9 8 3 11s-11-3-8-8" fill="none" stroke="#5c1a3a" stroke-opacity=".55" stroke-width="2" stroke-linecap="round"/>
+    </symbol>
+  </defs>
+</svg>
+
+<div id="bg-gradient"></div><div id="bg-foto"></div><canvas id="bg"></canvas><div id="hearts"></div>
+
+<!-- 0A. FORMULIR -->
+<section id="form" class="screen terang scrollable active">
+  <div class="kartuForm">
+    <h2 id="fJudul" class="tulisan"></h2>
+    <label class="f"><span id="fLNama"></span><input id="fNama" type="text" maxlength="60" autocomplete="name"></label>
+    <label class="f"><span id="fLPanggil"></span><input id="fPanggil" type="text" maxlength="40"></label>
+    <label class="f"><span id="fLPesan"></span><textarea id="fPesan" maxlength="1500"></textarea></label>
+    <p id="errForm" class="err"></p>
+    <button id="btnForm" class="btn">Lanjut ➜</button>
+    <p id="fCatatan" class="kecil"></p>
+  </div>
+</section>
+
+<!-- 0B. FOTO LANGSUNG DARI KAMERA -->
+<section id="unggah" class="screen terang scrollable">
+  <div class="kartuForm">
+    <h2 class="tulisan">Foto dulu yuk 📸</h2>
+    <p id="uInfo" class="kecil"></p>
+
+    <div id="kameraBox" class="kameraBox">
+      <video id="kamera" autoplay playsinline muted></video>
+      <div id="kameraPesan" class="kameraPesan">Menyalakan kamera...</div>
+    </div>
+
+    <div class="kamBtns">
+      <button id="btnBukaKamera" class="btn ghostD" hidden>📷 Nyalakan kamera</button>
+      <button id="btnJepret" class="btn" hidden>Ambil foto</button>
+      <button id="btnGanti" class="icon2" hidden title="Ganti kamera depan/belakang">🔄</button>
+    </div>
+    <label id="lblFallback" class="btn ghostD pilihBtn" hidden>Buka kamera HP<input id="inputKamera" type="file" accept="image/*" capture="user" hidden></label>
+
+    <div id="prev" class="prev"></div>
+    <p id="hitung" class="kecil"></p>
+    <p id="errFoto" class="err"></p>
+
+    <div id="boxEmail"><button id="btnKirimFoto" class="btn" disabled>Kirim &amp; lanjut ➜</button></div>
+    <div id="boxWa" hidden>
+      <button id="btnWaPesan" class="btn ghostD" disabled>1. Kirim pesan ke WhatsApp</button>
+      <button id="btnWaFoto" class="btn ghostD" disabled>2. Kirim foto ke WhatsApp</button>
+      <button id="btnWaLanjut" class="btn" disabled>Lanjut ➜</button>
+    </div>
+  </div>
+</section>
+
+<!-- 1. KADO -->
+<section id="gift" class="screen terang">
+  <button id="kado" class="kado" aria-label="Buka kado">
+    <svg viewBox="0 0 120 120"><rect x="20" y="55" width="80" height="55" rx="6" fill="#a63d6b"/><rect x="14" y="40" width="92" height="22" rx="5" fill="#c4608a"/><rect x="54" y="40" width="12" height="70" fill="#fff1f5"/><path d="M60 40C40 8 18 30 42 40ZM60 40C80 8 102 30 78 40Z" fill="#e8a0bb"/></svg>
+  </button>
+  <h1 class="tulisan">For you, my baby.</h1>
+  <p class="kecil">(tap to open)</p>
+</section>
+
+<!-- 2. PUZZLE -->
+<section id="puzzle" class="screen terang">
+  <h2 class="tulisan">Susun fotonya dulu ya ♥</h2>
+  <div id="papan"></div>
+  <p id="info" class="kecil">Ketuk dua kotak untuk menukar posisinya</p>
+  <button id="intip" class="btn">Intip foto</button>
+</section>
+
+<!-- 3. KODE RAHASIA -->
+<section id="gate" class="screen">
+  <div class="glass">
+    <div class="lock">🔐</div>
+    <h2 class="script judul-besar">Khusus untukmu</h2>
+    <p class="kecil-teks">Masukkan kode rahasia dari aku untuk membuka kejutan ini</p>
+    <input id="kode" type="password" inputmode="numeric" autocomplete="off" autocapitalize="off" placeholder="• • • • • •">
+    <p id="pesanSalah" class="salah"></p>
+    <button id="btnBuka" class="btn">Buka 🔓</button>
+    <p id="petunjuk" class="petunjuk"></p>
+  </div>
+</section>
+
+<!-- 4. CERITA -->
+<section id="cerita" class="screen">
+  <div id="cEmoji" class="cEmoji"></div>
+  <p id="cTeks" class="cTeks"></p>
+  <div id="cAksi" class="cAksi"></div>
+</section>
+
+<!-- 5. INTRO -->
+<section id="intro" class="screen">
+  <h1 class="script">Happy<br>Birthday!!</h1>
+  <h2 id="nama" class="nama"></h2>
+  <div class="cake">🎂</div>
+  <p class="quote" id="quote"></p>
+  <button class="btn" data-go="menu">Lanjut ➜</button>
+</section>
+
+<!-- 6. MENU -->
+<section id="menu" class="screen">
+  <p class="judul">Silahkan pilih mau hadiah yang mana...</p>
+  <div class="pilihan">
+    <button data-go="surat"><span>💌</span>Surat</button>
+    <button data-go="bunga"><span>💐</span>Bunga</button>
+    <button data-go="foto"><span>📷</span>Foto</button>
+  </div>
+  <div class="nav"><button class="icon" data-go="intro">⟳</button></div>
+</section>
+
+<!-- 7. SURAT -->
+<section id="surat" class="screen penuh">
+  <div class="halaman">
+    <h3 class="script judulSurat">Happy Birthday 💌</h3>
+    <div id="isiSurat" class="isi"></div>
+    <div id="ttdBox" class="ttd"><span id="ttdTeks"></span><img id="ttd" alt=""></div>
+    <div class="spot">
+      <div class="spot-atas">
+        <div class="cv"><img id="cover" alt=""></div>
+        <div class="spot-info"><b id="jdl"></b><span id="art"></span></div>
+      </div>
+      <div id="bar" class="bar"><i id="prog"></i></div>
+      <div class="waktu"><span id="t1">0:00</span><span id="t2">0:00</span></div>
+      <div class="ctrl">
+        <button id="prev2" aria-label="Ulang">⏮</button>
+        <button id="playBtn" class="play" aria-label="Putar">▶</button>
+        <button id="next" aria-label="Maju 10 detik">⏭</button>
+      </div>
+    </div>
+  </div>
+  <div class="nav"><button class="icon" data-go="intro">⟳</button><button class="icon" data-go="menu">‹</button></div>
+</section>
+
+<!-- 8. BUNGA -->
+<section id="bunga" class="screen penuh">
+  <div class="bunga-konten">
+    <h2 class="script judul-bunga">Flowers for you 💐</h2>
+    <div class="fotoRow">
+      <div class="polaroid p1"><img data-bunga="0" alt=""></div>
+      <div class="polaroid p2"><img data-bunga="1" alt=""></div>
+      <div class="polaroid p3"><img data-bunga="2" alt=""></div>
+      <div class="polaroid p4"><img data-bunga="3" alt=""></div>
+    </div>
+    <div class="buketWrap">
+      <img id="buket" class="buket-img" alt="">
+      <div class="buket-emoji">💐</div>
+    </div>
+  </div>
+  <div class="nav"><button class="icon" data-go="intro">⟳</button><button class="icon" data-go="menu">‹</button></div>
+</section>
+
+<!-- 9. FOTO (BISA DI-SCROLL) -->
+<section id="foto" class="screen penuh">
+  <div class="tepi kiri"></div><div class="tepi kanan"></div>
+  <div class="scroll">
+    <h2 class="script jdl">My Fav Pict of You 📸</h2>
+    <div id="vwrap" class="vwrap">
+      <video id="vid" controls playsinline preload="metadata"></video>
+      <div class="vph">🎬<small>Taruh video di foto/video.mp4</small></div>
+    </div>
+    <div id="sebar" class="sebar"></div>
+    <div id="vwrap2" class="vwrap potret">
+      <video id="vid2" controls playsinline preload="metadata"></video>
+      <div class="vph">🎬<small>Taruh video potret di foto/video-potret.mp4</small></div>
+    </div>
+  </div>
+  <div class="nav"><button class="icon" data-go="intro">⟳</button><button class="icon" data-go="menu">‹</button></div>
+</section>
+
+<div id="lb"><img alt=""></div>
+<audio id="lagu" loop preload="auto"></audio>
+
+<!-- Form tersembunyi untuk mode EMAIL (FormSubmit) -->
+<iframe name="kirimFrame" id="kirimFrame" style="display:none" title="kirim"></iframe>
+<form id="emailForm" method="POST" enctype="multipart/form-data" target="kirimFrame" style="display:none">
+  <input type="hidden" name="_captcha" value="false">
+  <input type="hidden" name="_template" value="table">
+  <input type="hidden" name="_subject" value="💌 Kesan & pesan baru dari kejutan ulang tahun">
+  <input type="text" name="_honey" tabindex="-1" autocomplete="off">
+  <input type="hidden" name="Nama" id="eNama">
+  <input type="hidden" name="Panggilan_favorit" id="ePgl">
+  <input type="hidden" name="Pesan" id="ePsn">
+  <input type="file" name="attachment" id="eFoto" multiple>
+</form>
+
+<script src="script.js"></script>
+</body>
+</html>
