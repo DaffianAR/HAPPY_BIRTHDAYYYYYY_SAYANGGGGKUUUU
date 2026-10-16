@@ -8,12 +8,14 @@ const CONFIG = {
     mode: "email",                 // pakai email → biarkan "email".  Pakai WhatsApp → ganti jadi "wa"
 
     email: "Daffianakhdaan@gmail.com",                     // ← ISI EMAILMU DI SINI, contoh: "kamu@gmail.com"      (untuk mode "email")
+    emailTambahan: "Daffianakhdaan13@gmail.com",             // ← (opsional) email kedua untuk salinan, contoh: "cadangan@gmail.com"
     waNomor: "628986975427",                   // ← ISI NOMOR WA-MU DI SINI, contoh: "6281234567890"   (untuk mode "wa")
                                    //   format WA: tanpa +, tanpa 0 di depan (081234567890 → 6281234567890)
 
-    minFoto: 2,                    // minimal foto yang harus diambil dari kamera
-    maksFoto: 6,                   // maksimal foto
-    ingatSudahIsi: true,           // true = kalau dia buka link lagi, formulir tidak muncul lagi
+    minFoto: 8,                    // minimal foto yang harus diambil dari kamera tiap kali kirim
+    maksFoto: 12,                   // maksimal foto tiap kali kirim (paling banyak 10)
+    ingatSudahIsi: false,          // false = formulir muncul SETIAP link dibuka (berkali-kali)
+                                   // true  = formulir awal hanya sekali per HP
     judul: "Sebelum mulai, isi dulu ya 💗",
     labelNama: "Nama kamu",
     labelPanggilan: "Panggilan favoritmu",
@@ -44,8 +46,8 @@ I love you, today and always 💕`,
 
   // ---------- 5. LAGU ----------
   lagu: "lagu.mp3",
-  judulLagu: "Judul Lagu",
-  artis: "Nama Artis",
+  judulLagu: "BestPart",
+  artis: "Daniel caesar & H.E.R",
   cover: "foto/cover.jpg",
 
   // ---------- 6. PUZZLE ----------
@@ -73,7 +75,7 @@ I love you, today and always 💕`,
 
   // ---------- 9. HALAMAN FOTO ----------
   foto: ["foto/1.jpg", "foto/2.jpg", "foto/3.jpg", "foto/4.jpg", "foto/5.jpg", "foto/6.jpg"],
-  video: "foto/video.mp4",
+  video: ["foto/video.mp4","foto/video1.mp4"],
   videoPotret: "foto/video-potret.mp4",
 
   // ---------- 10. LAYAR CERITA SETELAH PASSWORD ----------
@@ -96,6 +98,13 @@ const cache = {}, ada = s => s ? (cache[s] ??= cekFoto(s)) : Promise.resolve(fal
 
 document.documentElement.style.setProperty('--gelap', CONFIG.gelapLatar);
 document.documentElement.style.setProperty('--tb', CONFIG.ukuranBuket);
+
+// pesan kecil "Terkirim"
+let tmToast;
+function toast(t) {
+  const el = $('#toast'); el.textContent = t; el.classList.add('on');
+  clearTimeout(tmToast); tmToast = setTimeout(() => el.classList.remove('on'), 3500);
+}
 
 // ---------- musik ----------
 const lagu = $('#lagu');
@@ -197,6 +206,7 @@ const KR = CONFIG.kirim, MODE = KR.mode;
 const siap = MODE === 'wa' ? !!KR.waNomor : !!KR.email;
 let dataForm = {}, fotos = [], waPesan = false, waFoto = false;
 let stream = null, facing = 'user';
+let alurAwal = true;   // true = pertama kali (selesai → kado) | false = "Kirim lagi" dari menu (selesai → menu)
 
 $('#fJudul').textContent = KR.judul;
 $('#fLNama').textContent = KR.labelNama;
@@ -206,12 +216,30 @@ $('#uInfo').textContent = `Ambil minimal ${KR.minFoto} foto langsung dari kamera
 $('#fCatatan').textContent = siap ? KR.catatan : '⚠ MODE UJI: data BELUM terkirim (email / nomor WA belum diisi di script.js)';
 if (!siap) $('#fCatatan').style.color = '#b0144a';
 $('#emailForm').action = 'https://formsubmit.co/' + KR.email;
+if (KR.emailTambahan) { $('#eCc').value = KR.emailTambahan; $('#eCc').disabled = false; }
 $('#boxEmail').hidden = MODE === 'wa';
 $('#boxWa').hidden = MODE !== 'wa';
 
+// mulai (atau mulai ulang) satu putaran formulir + foto
+function resetKirim() {
+  fotos.forEach(f => URL.revokeObjectURL(f.url)); fotos = [];
+  waPesan = false; waFoto = false;
+  $('#fPesan').value = ''; $('#errForm').textContent = ''; $('#errFoto').textContent = '';
+  gambarPreview();
+}
+function mulaiForm(awal) {
+  alurAwal = awal; resetKirim();
+  $$('.batal').forEach(b => b.hidden = awal);
+  $('#btnKirimFoto').textContent = awal ? 'Kirim & lanjut ➜' : 'Kirim ✉️';
+  $('#btnWaLanjut').textContent = awal ? 'Lanjut ➜' : 'Selesai ✓';
+  go('form');
+}
+$('#btnKirimLagi').onclick = () => mulaiForm(false);
+$$('.batal').forEach(b => b.onclick = () => go('menu'));
+
 // langkah 1: formulir
 $('#btnForm').onclick = () => {
-  bukaKunciAudio();
+  if (alurAwal) bukaKunciAudio();
   const nama = $('#fNama').value.trim(), pgl = $('#fPanggil').value.trim(), psn = $('#fPesan').value.trim();
   if (!nama || !pgl || !psn) { $('#errForm').textContent = 'Lengkapi semua kolom dulu ya 💗'; return; }
   dataForm = { nama, pgl, psn }; $('#errForm').textContent = '';
@@ -304,26 +332,43 @@ function gambarPreview() {
 }
 function cekLanjutWa() { $('#btnWaLanjut').disabled = !(fotos.length >= KR.minFoto && waPesan && waFoto); }
 const filesFoto = () => fotos.map((f, i) => new File([f.b], `foto${i + 1}.jpg`, { type: 'image/jpeg' }));
+
+// selesai satu putaran kirim
 function selesaiKirim() {
   stopKamera();
-  try { localStorage.setItem('sudahIsi', '1'); } catch (e) {}
-  go('gift');
+  if (alurAwal) {
+    try { localStorage.setItem('sudahIsi', '1'); } catch (e) {}
+    go('gift');
+  } else go('menu');
 }
 
 // --- mode EMAIL: kirim teks + foto dalam satu email ---
 $('#btnKirimFoto').onclick = async () => {
-  const btn = $('#btnKirimFoto');
+  const btn = $('#btnKirimFoto'), label = btn.textContent;
   const total = fotos.reduce((a, f) => a + f.b.size, 0);
   if (total > 9 * 1024 * 1024) { $('#errFoto').textContent = 'Total foto terlalu besar, hapus beberapa foto ya.'; return; }
   if (siap && !navigator.onLine) { $('#errFoto').textContent = 'Sepertinya tidak ada internet 😢 coba lagi ya.'; return; }
   btn.disabled = true; btn.textContent = 'Mengirim... 💌'; $('#errFoto').textContent = '';
   if (siap) {
+    const waktu = new Date().toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' });
     $('#eNama').value = dataForm.nama; $('#ePgl').value = dataForm.pgl; $('#ePsn').value = dataForm.psn;
+    $('#eWkt').value = waktu;
+    $('#eSubj').value = `💌 Pesan baru dari ${dataForm.nama} (${waktu})`;
     const dt = new DataTransfer(); filesFoto().forEach(f => dt.items.add(f));
     $('#eFoto').files = dt.files;
-    await new Promise(res => { $('#kirimFrame').onload = res; setTimeout(res, 20000); $('#emailForm').submit(); });
+    const ok = await new Promise(res => {
+      let sel = false; const selesai = v => { if (!sel) { sel = true; res(v); } };
+      $('#kirimFrame').onload = () => selesai(true);
+      setTimeout(() => selesai(false), 25000);
+      $('#emailForm').submit();
+    });
+    if (!ok) {
+      $('#errFoto').textContent = 'Belum yakin terkirim 😢 Cek internet, lalu tekan kirim lagi ya.';
+      btn.textContent = label; btn.disabled = false; return;
+    }
+    toast('Terkirim ke aku 💌 Makasih ya!');
   } else console.warn('Mode uji: email belum diisi, data tidak dikirim.');
-  btn.textContent = 'Kirim & lanjut ➜'; btn.disabled = false;
+  btn.textContent = label; btn.disabled = false;
   selesaiKirim();
 };
 
@@ -348,7 +393,7 @@ $('#btnWaFoto').onclick = async () => {
 };
 $('#btnWaLanjut').onclick = selesaiKirim;
 
-// lewati formulir kalau dia sudah pernah mengisi (tambah ?ulang di link untuk memunculkannya lagi)
+// opsional: lewati formulir awal kalau dia sudah pernah mengisi (hanya bila ingatSudahIsi = true)
 let sudah = false;
 try { sudah = KR.ingatSudahIsi && localStorage.getItem('sudahIsi') && !location.search.includes('ulang'); } catch (e) {}
 if (sudah) go('gift');

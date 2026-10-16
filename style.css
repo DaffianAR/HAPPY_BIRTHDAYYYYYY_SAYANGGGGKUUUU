@@ -61,7 +61,7 @@ html[data-fase="awal"] :is(#bg-gradient,#bg,#bg-foto,#hearts){opacity:0}
 .f input:focus,.f textarea:focus{border-color:var(--m)}
 .f textarea{min-height:120px;resize:none}
 .err{min-height:1.3em;color:#b0144a;font-size:.8rem;margin-top:8px;text-align:center}
-.kartuForm .btn{align-self:center;margin-top:4px}
+.kartuForm .btn{align-self:center;margin-top:10px}
 .pilihBtn{display:inline-flex;align-items:center;justify-content:center}
 #boxEmail,#boxWa{display:flex;flex-direction:column;gap:10px;align-items:center}
 
@@ -74,6 +74,7 @@ html[data-fase="awal"] :is(#bg-gradient,#bg,#bg-foto,#hearts){opacity:0}
 .kameraBox.flash::after{content:"";position:absolute;inset:0;background:#fff;animation:kilat .3s forwards}
 @keyframes kilat{from{opacity:.95}to{opacity:0}}
 .kamBtns{display:flex;gap:10px;justify-content:center;align-items:center;margin-top:12px}
+.kamBtns .btn{margin-top:0}
 .icon2{width:48px;height:48px;border-radius:50%;border:2px solid var(--m);background:transparent;color:var(--m);font-size:1.3rem;cursor:pointer}
 
 .prev{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0 4px}
@@ -145,6 +146,7 @@ h1.script{font-size:clamp(3rem,15vw,4.4rem);line-height:1.05;text-shadow:0 4px 2
   cursor:pointer;padding:16px 16px;border-radius:20px;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);transition:transform .25s}
 .pilihan button span{display:block;font-size:2.8rem;margin-bottom:6px}
 .pilihan button:active{transform:scale(.92)}
+.btn.menuLagi{margin-top:26px;padding:12px 24px;min-height:44px;font-size:.9rem}
 
 /* ===== HALAMAN PENUH ===== */
 .screen.penuh{padding:0;align-items:stretch;justify-content:stretch;text-align:left;overflow:hidden}
