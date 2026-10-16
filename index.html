@@ -39,8 +39,15 @@
 
 <div id="bg-gradient"></div><div id="bg-foto"></div><canvas id="bg"></canvas><div id="hearts"></div>
 
+<!-- 00. VIDEO FULLSCREEN PALING AWAL -->
+<section id="splash" class="screen penuh splash active">
+  <video id="vSplash" class="vm" playsinline preload="auto"></video>
+  <button id="splashMulai" class="splashMulai">▶<small id="splashTeks">Ketuk untuk membuka kejutan</small></button>
+  <button id="splashLewati" class="splashLewati" hidden>Lewati ➜</button>
+</section>
+
 <!-- 0A. FORMULIR -->
-<section id="form" class="screen terang scrollable active">
+<section id="form" class="screen terang scrollable">
   <div class="kartuForm">
     <h2 id="fJudul" class="tulisan"></h2>
     <label class="f"><span id="fLNama"></span><input id="fNama" type="text" maxlength="60" autocomplete="name"></label>
@@ -81,6 +88,16 @@
       <button id="btnWaLanjut" class="btn" disabled>Lanjut ➜</button>
     </div>
   </div>
+</section>
+
+<!-- 0C. VIDEO LANDSCAPE SETELAH KIRIM FOTO -->
+<section id="vidL" class="screen terang">
+  <h2 class="tulisan">Satu kejutan untukmu 🎬</h2>
+  <div id="wrapL" class="vwrap vl">
+    <video id="vL" class="vm" controls playsinline preload="metadata"></video>
+    <div class="vph">🎬<small id="vLTeks"></small></div>
+  </div>
+  <button id="btnLanjutL" class="btn">Lanjut ➜</button>
 </section>
 
 <!-- 1. KADO -->
@@ -137,6 +154,7 @@
     <button data-go="bunga"><span>💐</span>Bunga</button>
     <button data-go="foto"><span>📷</span>Foto</button>
   </div>
+  <button id="btnKirimLagi" class="kirimLagi">💌 Kirim kesan &amp; foto lagi</button>
   <div class="nav"><button class="icon" data-go="intro">⟳</button></div>
 </section>
 
@@ -181,20 +199,14 @@
   <div class="nav"><button class="icon" data-go="intro">⟳</button><button class="icon" data-go="menu">‹</button></div>
 </section>
 
-<!-- 9. FOTO (BISA DI-SCROLL) -->
+<!-- 9. FOTO (BISA DI-SCROLL, VIDEO ATAS + FOTO + VIDEO BAWAH) -->
 <section id="foto" class="screen penuh">
   <div class="tepi kiri"></div><div class="tepi kanan"></div>
   <div class="scroll">
     <h2 class="script jdl">My Fav Pict of You 📸</h2>
-    <div id="vwrap" class="vwrap">
-      <video id="vid" controls playsinline preload="metadata"></video>
-      <div class="vph">🎬<small>Taruh video di foto/video.mp4</small></div>
-    </div>
+    <div id="vAtas"></div>
     <div id="sebar" class="sebar"></div>
-    <div id="vwrap2" class="vwrap potret">
-      <video id="vid2" controls playsinline preload="metadata"></video>
-      <div class="vph">🎬<small>Taruh video potret di foto/video-potret.mp4</small></div>
-    </div>
+    <div id="vBawah"></div>
   </div>
   <div class="nav"><button class="icon" data-go="intro">⟳</button><button class="icon" data-go="menu">‹</button></div>
 </section>
