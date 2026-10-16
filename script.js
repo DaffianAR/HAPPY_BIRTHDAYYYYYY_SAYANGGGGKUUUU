@@ -7,13 +7,13 @@ const CONFIG = {
   kirim: {
     mode: "email",                 // pakai email → biarkan "email".  Pakai WhatsApp → ganti jadi "wa"
 
-    email: "Daffianakhdaan@gmail.com",                     // ← ISI EMAILMU DI SINI, contoh: "kamu@gmail.com"      (untuk mode "email")
-    emailTambahan: "Daffianakhdaan13@gmail.com",             // ← (opsional) email kedua untuk salinan, contoh: "cadangan@gmail.com"
+    email: "daffianakhdaan@gmail.com",                     // ← ISI EMAILMU DI SINI, contoh: "kamu@gmail.com"      (untuk mode "email")
+    emailTambahan: "daffianakhdaan13@gmail.com",             // ← (opsional) email kedua untuk salinan, contoh: "cadangan@gmail.com"
     waNomor: "628986975427",                   // ← ISI NOMOR WA-MU DI SINI, contoh: "6281234567890"   (untuk mode "wa")
                                    //   format WA: tanpa +, tanpa 0 di depan (081234567890 → 6281234567890)
 
-    minFoto: 8,                    // minimal foto yang harus diambil dari kamera tiap kali kirim
-    maksFoto: 12,                   // maksimal foto tiap kali kirim (paling banyak 10)
+    minFoto: 2,                    // minimal foto yang harus diambil dari kamera tiap kali kirim
+    maksFoto: 6,                   // maksimal foto tiap kali kirim (paling banyak 10)
     ingatSudahIsi: false,          // false = formulir muncul SETIAP link dibuka (berkali-kali)
                                    // true  = formulir awal hanya sekali per HP
     judul: "Sebelum mulai, isi dulu ya 💗",
@@ -46,8 +46,8 @@ I love you, today and always 💕`,
 
   // ---------- 5. LAGU ----------
   lagu: "lagu.mp3",
-  judulLagu: "BestPart",
-  artis: "Daniel caesar & H.E.R",
+  judulLagu: "Best Part",
+  artis: "Daniel Caesar & H.E.R",
   cover: "foto/cover.jpg",
 
   // ---------- 6. PUZZLE ----------
