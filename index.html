@@ -39,15 +39,8 @@
 
 <div id="bg-gradient"></div><div id="bg-foto"></div><canvas id="bg"></canvas><div id="hearts"></div>
 
-<!-- 00. VIDEO FULLSCREEN PALING AWAL -->
-<section id="splash" class="screen penuh splash active">
-  <video id="vSplash" class="vm" playsinline preload="auto"></video>
-  <button id="splashMulai" class="splashMulai">▶<small id="splashTeks">Ketuk untuk membuka kejutan</small></button>
-  <button id="splashLewati" class="splashLewati" hidden>Lewati ➜</button>
-</section>
-
 <!-- 0A. FORMULIR -->
-<section id="form" class="screen terang scrollable">
+<section id="form" class="screen terang scrollable active">
   <div class="kartuForm">
     <h2 id="fJudul" class="tulisan"></h2>
     <label class="f"><span id="fLNama"></span><input id="fNama" type="text" maxlength="60" autocomplete="name"></label>
@@ -55,6 +48,7 @@
     <label class="f"><span id="fLPesan"></span><textarea id="fPesan" maxlength="1500"></textarea></label>
     <p id="errForm" class="err"></p>
     <button id="btnForm" class="btn">Lanjut ➜</button>
+    <button class="btn ghostD batal" hidden>Batal</button>
     <p id="fCatatan" class="kecil"></p>
   </div>
 </section>
@@ -87,17 +81,8 @@
       <button id="btnWaFoto" class="btn ghostD" disabled>2. Kirim foto ke WhatsApp</button>
       <button id="btnWaLanjut" class="btn" disabled>Lanjut ➜</button>
     </div>
+    <button class="btn ghostD batal" hidden>Batal</button>
   </div>
-</section>
-
-<!-- 0C. VIDEO LANDSCAPE SETELAH KIRIM FOTO -->
-<section id="vidL" class="screen terang">
-  <h2 class="tulisan">Satu kejutan untukmu 🎬</h2>
-  <div id="wrapL" class="vwrap vl">
-    <video id="vL" class="vm" controls playsinline preload="metadata"></video>
-    <div class="vph">🎬<small id="vLTeks"></small></div>
-  </div>
-  <button id="btnLanjutL" class="btn">Lanjut ➜</button>
 </section>
 
 <!-- 1. KADO -->
@@ -153,8 +138,8 @@
     <button data-go="surat"><span>💌</span>Surat</button>
     <button data-go="bunga"><span>💐</span>Bunga</button>
     <button data-go="foto"><span>📷</span>Foto</button>
+    <button id="btnKirimLagi"><span>✉️</span>Kirim lagi</button>
   </div>
-  <button id="btnKirimLagi" class="kirimLagi">💌 Kirim kesan &amp; foto lagi</button>
   <div class="nav"><button class="icon" data-go="intro">⟳</button></div>
 </section>
 
@@ -199,19 +184,26 @@
   <div class="nav"><button class="icon" data-go="intro">⟳</button><button class="icon" data-go="menu">‹</button></div>
 </section>
 
-<!-- 9. FOTO (BISA DI-SCROLL, VIDEO ATAS + FOTO + VIDEO BAWAH) -->
+<!-- 9. FOTO (BISA DI-SCROLL) -->
 <section id="foto" class="screen penuh">
   <div class="tepi kiri"></div><div class="tepi kanan"></div>
   <div class="scroll">
     <h2 class="script jdl">My Fav Pict of You 📸</h2>
-    <div id="vAtas"></div>
+    <div id="vwrap" class="vwrap">
+      <video id="vid" controls playsinline preload="metadata"></video>
+      <div class="vph">🎬<small>Taruh video di foto/video.mp4</small></div>
+    </div>
     <div id="sebar" class="sebar"></div>
-    <div id="vBawah"></div>
+    <div id="vwrap2" class="vwrap potret">
+      <video id="vid2" controls playsinline preload="metadata"></video>
+      <div class="vph">🎬<small>Taruh video potret di foto/video-potret.mp4</small></div>
+    </div>
   </div>
   <div class="nav"><button class="icon" data-go="intro">⟳</button><button class="icon" data-go="menu">‹</button></div>
 </section>
 
 <div id="lb"><img alt=""></div>
+<div id="toast" class="toast"></div>
 <audio id="lagu" loop preload="auto"></audio>
 
 <!-- Form tersembunyi untuk mode EMAIL (FormSubmit) -->
@@ -219,11 +211,13 @@
 <form id="emailForm" method="POST" enctype="multipart/form-data" target="kirimFrame" style="display:none">
   <input type="hidden" name="_captcha" value="false">
   <input type="hidden" name="_template" value="table">
-  <input type="hidden" name="_subject" value="💌 Kesan & pesan baru dari kejutan ulang tahun">
+  <input type="hidden" name="_subject" id="eSubj" value="💌 Pesan baru dari kejutan ulang tahun">
+  <input type="hidden" name="_cc" id="eCc" disabled>
   <input type="text" name="_honey" tabindex="-1" autocomplete="off">
   <input type="hidden" name="Nama" id="eNama">
   <input type="hidden" name="Panggilan_favorit" id="ePgl">
   <input type="hidden" name="Pesan" id="ePsn">
+  <input type="hidden" name="Waktu" id="eWkt">
   <input type="file" name="attachment" id="eFoto" multiple>
 </form>
 

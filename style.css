@@ -43,10 +43,17 @@ html[data-fase="awal"] :is(#bg-gradient,#bg,#bg-foto,#hearts){opacity:0}
 .btn.ghost{background:transparent;color:var(--c);border:2px solid var(--c);box-shadow:none}
 .terang .btn{background:var(--m);color:var(--c)}
 .terang .btn.ghostD{background:transparent;color:var(--m);border:2px solid var(--m);box-shadow:none}
+.btn.batal{padding:8px 22px;min-height:40px;font-size:.9rem}
 .btn:disabled{opacity:.45;cursor:not-allowed}
 .icon{background:rgba(255,241,245,.22);color:var(--c);border:1px solid rgba(255,241,245,.4);border-radius:50%;width:46px;height:46px;
   font-size:1.4rem;cursor:pointer;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
 .nav{position:absolute;bottom:calc(36px + env(safe-area-inset-bottom));display:flex;gap:14px;z-index:5}
+
+/* pesan kecil "Terkirim" */
+.toast{position:fixed;left:50%;bottom:calc(30px + env(safe-area-inset-bottom));transform:translate(-50%,30px);opacity:0;pointer-events:none;z-index:300;
+  background:rgba(46,15,31,.92);color:var(--c);padding:12px 20px;border-radius:999px;font-size:.9rem;text-align:center;max-width:90vw;
+  box-shadow:0 8px 24px rgba(0,0,0,.4);transition:opacity .4s,transform .4s}
+.toast.on{opacity:1;transform:translate(-50%,0)}
 
 /* ===== FORMULIR & KAMERA ===== */
 .screen.scrollable{justify-content:flex-start;overflow-y:auto}
@@ -61,9 +68,17 @@ html[data-fase="awal"] :is(#bg-gradient,#bg,#bg-foto,#hearts){opacity:0}
 .f input:focus,.f textarea:focus{border-color:var(--m)}
 .f textarea{min-height:120px;resize:none}
 .err{min-height:1.3em;color:#b0144a;font-size:.8rem;margin-top:8px;text-align:center}
-.kartuForm .btn{align-self:center;margin-top:10px}
+.kartuForm .btn{align-self:center;margin-top:4px}
 .pilihBtn{display:inline-flex;align-items:center;justify-content:center}
 #boxEmail,#boxWa{display:flex;flex-direction:column;gap:10px;align-items:center}
+
+/* formulir saat dibuka lagi dari menu (latar gelap) */
+html[data-fase="foto"] :is(#form,#unggah){color:var(--c)}
+html[data-fase="foto"] .kartuForm{background:rgba(255,241,245,.12);border:1px solid rgba(255,241,245,.3);padding:20px 18px;border-radius:24px;
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+html[data-fase="foto"] .terang .btn.ghostD{color:var(--c);border-color:var(--c)}
+html[data-fase="foto"] .icon2{color:var(--c);border-color:var(--c)}
+html[data-fase="foto"] .err{color:#ffc2d4}
 
 .kameraBox{position:relative;width:min(100%,calc(52dvh * .75));aspect-ratio:3/4;margin:8px auto 0;border-radius:18px;overflow:hidden;
   background:#1b0a12;box-shadow:0 10px 30px rgba(92,26,58,.35)}
@@ -74,7 +89,6 @@ html[data-fase="awal"] :is(#bg-gradient,#bg,#bg-foto,#hearts){opacity:0}
 .kameraBox.flash::after{content:"";position:absolute;inset:0;background:#fff;animation:kilat .3s forwards}
 @keyframes kilat{from{opacity:.95}to{opacity:0}}
 .kamBtns{display:flex;gap:10px;justify-content:center;align-items:center;margin-top:12px}
-.kamBtns .btn{margin-top:0}
 .icon2{width:48px;height:48px;border-radius:50%;border:2px solid var(--m);background:transparent;color:var(--m);font-size:1.3rem;cursor:pointer}
 
 .prev{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0 4px}
@@ -141,12 +155,11 @@ h1.script{font-size:clamp(3rem,15vw,4.4rem);line-height:1.05;text-shadow:0 4px 2
 .cake{font-size:clamp(6rem,30vw,8rem);line-height:1.1;animation:float 3s infinite;filter:drop-shadow(0 10px 20px rgba(46,15,31,.45))}
 .quote{font-size:.9rem;font-style:italic;margin:14px 0 24px;max-width:280px;line-height:1.5}
 .judul{font-size:1.15rem;margin-bottom:30px;line-height:1.5;text-shadow:0 2px 10px rgba(46,15,31,.5)}
-.pilihan{display:flex;gap:18px}
+.pilihan{display:grid;grid-template-columns:repeat(2,minmax(110px,1fr));gap:16px}
 .pilihan button{background:rgba(255,241,245,.14);border:1px solid rgba(255,241,245,.35);color:var(--c);font:inherit;font-size:.85rem;
   cursor:pointer;padding:16px 16px;border-radius:20px;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);transition:transform .25s}
 .pilihan button span{display:block;font-size:2.8rem;margin-bottom:6px}
 .pilihan button:active{transform:scale(.92)}
-.btn.menuLagi{margin-top:26px;padding:12px 24px;min-height:44px;font-size:.9rem}
 
 /* ===== HALAMAN PENUH ===== */
 .screen.penuh{padding:0;align-items:stretch;justify-content:stretch;text-align:left;overflow:hidden}
